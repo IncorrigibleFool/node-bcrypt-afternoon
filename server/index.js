@@ -4,6 +4,7 @@ const session = require('express-session')
 const massive = require('massive')
 const authCtrl = require('./controllers/authCtrl')
 const treasureCtrl = require('./controllers/treasureCtrl')
+const auth = require('./middleware/authMiddleware')
 
 const PORT = 4000
 const{CONNECTION_STRING, SESSION_SECRET} = process.env
@@ -27,6 +28,7 @@ app.post('/auth/register', authCtrl.register)
 app.post('/auth/login', authCtrl.login)
 app.delete('/auth/logout', authCtrl.logout)
 app.get('/api/treasure/dragon', treasureCtrl.dragonTreasure)
+app.get('/api/treasure/user', auth.usersOnly, treasureCtrl.getUserTreasure)
 
 //listener
 app.listen(PORT, ()=> {
